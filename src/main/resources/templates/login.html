@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Login</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<p th:if="${param.logout}">
+		You have been logged out.
+	</p>
+	<div>
+		<h3 style="margin-bottom: 0">Login via</h3>
+		<ul style="margin-top: 0">
+			<li th:each="clientRegistration : ${clientRegistrationList}">
+				<a href="#" th:href="@{'/oauth2/authorization/' + ${clientRegistration.registrationId}}"  th:text="${clientRegistration.clientName}">Provider</a>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h3 style="margin-bottom: 0">Login</h3>
+		<p th:if="${param.error}">
+			Invalid username or password.
+		</p>
+		<form th:action="@{/login}" method="post">
+			<table>
+				<tr>
+					<td>
+						<label for="username">Username</label>
+					</td>
+					<td>
+						<input type="text" id="username" name="username" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="password">Password</label>
+					</td>
+					<td>
+						<input type="password" id="password" name="password" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="submit" value="Log in" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
