@@ -4,6 +4,9 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,27 +22,39 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = 2994511031102491790L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+
 	@Column(name = "username")
 	private String username;
 
 	@Column(name = "password")
 	private String password;
 
-	@ManyToMany
+	@Column(name = "enabled")
+	private Boolean enabled;
+
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
-			name = "users_roles",
-			joinColumns = @JoinColumn(name = "username", table = "users", referencedColumnName = "username"),
-			inverseJoinColumns= @JoinColumn(name = "authority", table = "roles", referencedColumnName = "authority"))
-	private Set<Role> authorities;
+			name = "users_authorities",
+			joinColumns = @JoinColumn(name = "user_id", table = "users", referencedColumnName = "id"),
+			inverseJoinColumns= @JoinColumn(name = "authority_id", table = "authorities", referencedColumnName = "id"))
+	private Set<Authority> authorities;
 
 	public User() {
 		super();
 	}
 
-	public User(String username, String password, Set<Role> authorities) {
+	public User(String username, String password, Set<Authority> authorities) {
 		this.username = username;
 		this.password = password;
 		this.authorities = authorities;
+		enabled = true;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	@Override
@@ -53,13 +68,13 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public Set<Role> getAuthorities() {
+	public Set<Authority> getAuthorities() {
 		return authorities;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return enabled;
 	}
 
 	@Override

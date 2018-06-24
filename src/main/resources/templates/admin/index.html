@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Admin</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<div style="float: right" th:fragment="logout" sec:authorize="isAuthenticated()">
+		<div style="float: left">
+			<span style="font-weight: bold">User: </span>
+			<span sec:authentication="name"></span>
+		</div>
+		<div style="float: none">&nbsp;</div>
+		<div style="float: right">
+			<form action="#" th:action="@{/logout}" method="post">
+				<input type="submit" value="Logout" />
+			</form>
+		</div>
+	</div>
+	<h1>Admin</h1>
+	<div>
+		<span>You are successfully logged in </span>
+		<span style="font-weight: bold" sec:authentication="name"></span>
+		<span th:if="${clientName}">via </span>
+		<span th:if="${clientName}" style="font-weight: bold" th:text="${clientName}"></span>
+	</div>
+	<br />
+	<div>
+		<span style="font-weight: bold">Credentials:</span>
+		<ul>
+			<li>
+				<span th:text="${username}">username</span>
+			</li>
+			<li>
+				<span th:text="${password}">password</span>
+			</li>
+			<li>
+				<span th:text="${role.authority}">role</span>
+			</li>
+		</ul>
+	</div>
+	<br />
+	<div th:if="${clientName}">
+		<a href="/admin/userinfo" th:href="@{/admin/userinfo}">Display User Info</a>
+	</div>
+</body>
+</html>

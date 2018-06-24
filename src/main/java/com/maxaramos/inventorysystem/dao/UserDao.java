@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.maxaramos.inventorysystem.model.User;
 
 @Repository
-public interface UserDao extends JpaRepository<User, String>{
+public interface UserDao extends JpaRepository<User, String> {
 
 	public boolean existsByUsername(String username);
 

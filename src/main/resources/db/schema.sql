@@ -1,14 +1,17 @@
 CREATE TABLE users (
-	username VARCHAR(30) PRIMARY KEY,
-	password VARCHAR(30)
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(30) NOT NULL UNIQUE,
+	password VARCHAR(30) NOT NULL DEFAULT '',
+	enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE roles (
-	authority VARCHAR(20) PRIMARY KEY
+CREATE TABLE authorities (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	authority VARCHAR(15) NOT NULL UNIQUE
 );
 
-CREATE TABLE users_roles (
-	username VARCHAR(30) REFERENCES users(username),
-	authority VARCHAR(20) REFERENCES roles(authority),
-	PRIMARY KEY(username, authority)
+CREATE TABLE users_authorities (
+	user_id BIGINT REFERENCES users(id),
+	authority_id BIGINT REFERENCES authorities(id),
+	PRIMARY KEY(user_id, authority_id)
 );
