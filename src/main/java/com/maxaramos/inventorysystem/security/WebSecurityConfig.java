@@ -1,5 +1,9 @@
 package com.maxaramos.inventorysystem.security;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +13,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import com.maxaramos.inventorysystem.model.Role;
 
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -27,10 +32,11 @@ public class WebSecurityConfig {
 
 	@Bean
 	public UserDetailsService userDetailsService() throws Exception {
-		@SuppressWarnings("deprecation")
-		UserBuilder userBuilder = User.withDefaultPasswordEncoder();
+//		@SuppressWarnings("deprecation")
+//		UserBuilder userBuilder = User.withDefaultPasswordEncoder();
 		InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-		userDetailsManager.createUser(userBuilder.username(username).password(password).roles(roles).build());
+//		userDetailsManager.createUser(userBuilder.username(username).password(password).roles(roles).build());
+		userDetailsManager.createUser(new User(username, "{noop}" + password, Stream.of(roles).map(Role::new).collect(Collectors.toSet())));
 		return userDetailsManager;
 	}
 
@@ -55,6 +61,9 @@ public class WebSecurityConfig {
 	@Configuration
 	public static class UiSecurityConfig extends WebSecurityConfigurerAdapter {
 
+		@Autowired
+		private LoginSuccessHandler loginSuccessHandler;
+
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
@@ -64,9 +73,11 @@ public class WebSecurityConfig {
 					.and()
 				.oauth2Login()
 					.loginPage("/login")
+					.successHandler(loginSuccessHandler)
 					.and()
 				.formLogin()
 					.loginPage("/login")
+					.successHandler(loginSuccessHandler)
 					.and()
 				.csrf().disable();
 		}

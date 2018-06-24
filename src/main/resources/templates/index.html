@@ -27,6 +27,21 @@
 		<span th:if="${clientName}" style="font-weight: bold" th:text="${clientName}"></span>
 	</div>
 	<br />
+	<div>
+		<span style="font-weight: bold">Credentials:</span>
+		<ul>
+			<li>
+				<span th:text="${username}">username</span>
+			</li>
+			<li>
+				<span th:text="${password}">password</span>
+			</li>
+			<li>
+				<span th:text="${role.authority}">role</span>
+			</li>
+		</ul>
+	</div>
+	<br />
 	<div th:if="${clientName}">
 		<a href="/userinfo" th:href="@{/userinfo}">Display User Info</a>
 	</div>
