@@ -33,7 +33,9 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 		String username = authentication.getName();
 
-		if (!userService.existsByUsername(username)) {
+		if (userService.existsByUsername(username)) {
+
+		} else {
 			String password = (String) authentication.getCredentials();
 			String authorityName = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst().get();
 			Authority authority = authorityService.findByAuthority(authorityName);

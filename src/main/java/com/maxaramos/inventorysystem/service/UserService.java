@@ -2,6 +2,7 @@ package com.maxaramos.inventorysystem.service;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,9 @@ import com.maxaramos.inventorysystem.model.User;
 public class UserService implements UserDetailsService {
 
 	@Autowired
+	private Logger log;
+
+	@Autowired
 	private UserDao userDao;
 
 	@Override
@@ -23,7 +27,9 @@ public class UserService implements UserDetailsService {
 			throw new UsernameNotFoundException("Username: " + username);
 		}
 
-		return userDao.findByUsername(username);
+		User user = userDao.findByUsername(username);
+		log.debug(user.toString());
+		return user;
 	}
 
 	public void save(User user) {

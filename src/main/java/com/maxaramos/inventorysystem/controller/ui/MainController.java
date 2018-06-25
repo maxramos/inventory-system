@@ -48,7 +48,6 @@ public class MainController {
 		}
 
 		String authority = user.getAuthorities().stream().findFirst().get().getAuthority();
-
 		return "ROLE_ADMIN".equals(authority) ? "/admin/index" : "/index";
 	}
 

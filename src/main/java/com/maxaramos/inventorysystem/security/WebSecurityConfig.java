@@ -8,34 +8,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
-@SuppressWarnings("deprecation")
 public class WebSecurityConfig {
 
-//	@Value("${spring.security.user.name}")
-//	private String username;
-//
-//	@Value("${spring.security.user.password}")
-//	private String password;
-//
-//	@Value("${spring.security.user.roles}")
-//	private String[] roles;
-
-//	@Bean
-//	public UserDetailsService userDetailsService() throws Exception {
-////		@SuppressWarnings("deprecation")
-////		UserBuilder userBuilder = User.withDefaultPasswordEncoder();
-//		InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-////		userDetailsManager.createUser(userBuilder.username(username).password(password).roles(roles).build());
-//		userDetailsManager.createUser(new User(username, "{noop}" + password, Stream.of(roles).map(Authority::new).collect(Collectors.toSet())));
-//		return userDetailsManager;
-//	}
-
 	@Bean
-	public NoOpPasswordEncoder passwordEncoder() {
-	    return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+	public BCryptPasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
 	}
 
 	@Configuration

@@ -44,4 +44,9 @@ public class Authority implements GrantedAuthority {
 		return authority;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Authority [id=%s, authority=%s]", id, authority);
+	}
+
 }

@@ -92,4 +92,11 @@ public class User implements UserDetails {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("User [id=%s, username=%s, password=%s, enabled=%s, authorities=%s]", id, username, password, enabled, authorities);
+	}
+
+
+
 }
