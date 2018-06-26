@@ -72,6 +72,9 @@ public class WebSecurityConfig {
 				.formLogin()
 					.loginPage("/login")
 					.and()
+				.headers()
+					.frameOptions().sameOrigin()
+					.and()
 				.csrf().disable();
 		}
 
