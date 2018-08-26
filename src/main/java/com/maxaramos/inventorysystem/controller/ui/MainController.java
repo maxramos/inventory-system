@@ -18,6 +18,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.maxaramos.inventorysystem.model.User;
+import com.maxaramos.inventorysystem.service.ItemService;
 import com.maxaramos.inventorysystem.service.UserService;
 
 import reactor.core.publisher.Mono;
@@ -31,6 +32,9 @@ public class MainController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private ItemService itemService;
+
 	@GetMapping("/")
 	public String index(Model model, Authentication authentication) {
 		if (authentication instanceof OAuth2AuthenticationToken) {
@@ -40,6 +44,7 @@ public class MainController {
 		}
 
 		User user = userService.findByUsername(authentication.getName());
+
 
 		if (user != null) {
 			model.addAttribute("username", user.getUsername());
@@ -70,6 +75,7 @@ public class MainController {
 		}
 
 		model.addAttribute("userAttributes", userAttributes);
+		itemService.findItem();
 		return "/userinfo";
 	}
 
